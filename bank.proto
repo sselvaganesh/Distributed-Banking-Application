@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+message InitBranch {
+  uint32 balance=1;
+
+  message Branch {
+    string name=1;
+    string ip=2;
+    uint32 port=3;
+  }
+
+  repeated Branch all_branches=2;
+}
+
+message Transfer {
+  string src_branch = 1;
+  string dst_branch = 2;
+  uint32 money = 3;
+}
+
+message InitSnapshot {
+  uint32 snapshot_id = 1;
+}
+
+message Marker {
+  string src_branch = 1;
+  string dst_branch = 2;
+  uint32 snapshot_id = 3;  
+}
+
+message RetrieveSnapshot {
+  uint32 snapshot_id = 1;
+}
+
+message ReturnSnapshot {
+  message LocalSnapshot{
+    uint32 snapshot_id=1;
+    uint32 balance=2;
+    repeated uint32 channel_state=3;
+  }
+
+  LocalSnapshot local_snapshot = 1;
+}
+
+message BranchMessage {
+  oneof branch_message {
+    InitBranch init_branch = 1;
+    Transfer transfer = 2;
+    InitSnapshot init_snapshot = 3;
+    Marker marker = 4;
+    RetrieveSnapshot retrieve_snapshot = 5;
+    ReturnSnapshot return_snapshot = 6;  
+  }
+}
+
